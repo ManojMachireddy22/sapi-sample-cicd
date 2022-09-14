@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="636d2a19-ce89-4f3d-a49b-77d45a9bd0de" >
+		<http:listener-connection host="0.0.0.0" port="8082" />
+	</http:listener-config>
+	<flow name="sapi-sampleFlow" doc:id="58e995c0-e3c7-482d-8e65-7ebde390c875" >
+		<http:listener doc:name="Listener" doc:id="4bf62011-6e42-4db7-a062-8624f7b2cfa1" config-ref="HTTP_Listener_config" path="sapi"/>
+		<logger level="INFO" doc:name="Logger" doc:id="c96d45ef-d60d-46a7-afca-94a134aa9c98" message="reuqest received"/>
+		<ee:transform doc:name="Transform Message" doc:id="5652f28e-acdb-49da-afab-c8861fcb618d" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+"system api"]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="c32d39bf-99c7-4b46-b693-6d25620ce461" message="#[payload]"/>
+	</flow>
+</mule>
